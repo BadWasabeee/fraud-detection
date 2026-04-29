@@ -5,6 +5,7 @@ import pandas as pd
 
 def build_model_frame(transactions: pd.DataFrame, accounts: pd.DataFrame) -> pd.DataFrame:
     df = transactions.merge(accounts, on="account_id", how="left")
+    df["prior_chargebacks"] = df["prior_chargebacks"].fillna(0).astype(int)
 
     df["is_large_amount"] = (df["amount_usd"] >= 1000).astype(int)
     df["login_pressure"] = pd.cut(
